@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nikku, be my Valentine?</title>
+
   <style>
     :root{
       --bg1:#fff1f6;
@@ -19,375 +20,319 @@
     }
 
     *{ box-sizing:border-box; }
+
     body{
       margin:0;
       min-height:100vh;
       display:grid;
       place-items:center;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 700px at 20% 10%, var(--bg2), transparent),
-                  radial-gradient(1200px 700px at 80% 90%, #ffe0f0, transparent),
-                  linear-gradient(135deg, var(--bg1), #ffffff);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, var(--bg2), transparent),
+        radial-gradient(1200px 700px at 80% 90%, #ffe0f0, transparent),
+        linear-gradient(135deg, var(--bg1), #ffffff);
       overflow:hidden;
+      color:var(--text);
     }
 
+    /* Floating hearts */
     .hearts{
       position:fixed;
       inset:0;
       pointer-events:none;
-      overflow:hidden;
-      opacity:.55;
+      opacity:.5;
     }
     .heart{
       position:absolute;
       font-size:18px;
-      animation: floatUp linear infinite;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.08));
-      transform: translateY(110vh);
+      animation: float 8s linear infinite;
     }
-    @keyframes floatUp{
-      0%   { transform: translateY(110vh) translateX(0) rotate(0deg); opacity:0; }
-      10%  { opacity:1; }
-      100% { transform: translateY(-20vh) translateX(40px) rotate(20deg); opacity:0; }
+    @keyframes float{
+      from{ transform:translateY(110vh); opacity:0; }
+      10%{ opacity:1; }
+      to{ transform:translateY(-20vh); opacity:0; }
     }
 
     .wrap{
-      width:min(980px, 92vw);
+      width:min(980px,92vw);
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns:1.2fr .8fr;
       gap:24px;
-      align-items:stretch;
     }
 
     .card{
-      background:var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background:#fff;
+      border-radius:28px;
       padding:28px;
-      position:relative;
-      overflow:hidden;
-      border: 1px solid rgba(0,0,0,.05);
+      box-shadow:var(--shadow);
     }
 
     .badge{
       display:inline-flex;
-      gap:10px;
+      gap:8px;
       align-items:center;
       padding:10px 14px;
-      border-radius: 999px;
-      background: rgba(255,45,111,.08);
-      color: var(--yesHover);
-      font-weight: 600;
-      letter-spacing:.2px;
-      font-size: 14px;
+      border-radius:999px;
+      background:rgba(255,45,111,.08);
+      color:var(--yesHover);
+      font-weight:700;
+      font-size:14px;
     }
-    .badge span{ font-size:16px; }
 
     h1{
-      margin:14px 0 8px;
-      font-size: clamp(28px, 3.6vw, 44px);
-      line-height:1.08;
-      letter-spacing:-.6px;
+      margin:16px 0 8px;
+      font-size:clamp(28px,4vw,44px);
+      letter-spacing:-.5px;
     }
 
     p{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.55;
-      max-width: 55ch;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:55ch;
     }
 
-    .name{
-      color: var(--yesHover);
-      font-weight: 800;
-    }
+    .name{ color:var(--yesHover); font-weight:900; }
 
     .ctaRow{
       display:flex;
       gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 18px;
-      position: relative;
-      min-height: 56px;
+      margin-top:18px;
     }
 
     button{
       border:0;
-      border-radius: 999px;
-      padding: 14px 18px;
-      font-weight: 700;
+      border-radius:999px;
+      padding:14px 18px;
+      font-weight:800;
       cursor:pointer;
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      font-size: 16px;
-      user-select:none;
-      white-space:nowrap;
+      font-size:16px;
+      transition:.15s;
     }
+
     .yesBtn{
-      background: var(--yes);
-      color: #fff;
-      box-shadow: 0 14px 30px rgba(255,45,111,.25);
+      background:var(--yes);
+      color:#fff;
+      box-shadow:0 14px 30px rgba(255,45,111,.25);
     }
-    .yesBtn:hover{ background: var(--yesHover); transform: translateY(-1px); }
-    .yesBtn:active{ transform: translateY(1px) scale(.98); }
+    .yesBtn:hover{ background:var(--yesHover); }
 
     .noBtn{
-      background: rgba(47,47,47,.08);
-      color: var(--no);
-      position: relative;
-    }
-    .noBtn:hover{ transform: translateY(-1px); }
-
-    .side{ display:grid; gap:24px; }
-
-    .mini{
-      border-radius: var(--radius);
-      padding:22px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(0,0,0,.05);
-      box-shadow: 0 14px 40px rgba(0,0,0,.08);
-      backdrop-filter: blur(6px);
+      background:rgba(0,0,0,.08);
+      color:#222;
     }
 
-    .mini h2{
-      margin:0 0 10px;
-      font-size: 18px;
-      letter-spacing:-.2px;
-    }
-    .chips{ display:flex; flex-wrap:wrap; gap:10px; }
-    .chip{
-      padding:10px 12px;
-      border-radius: 999px;
-      background: rgba(255,45,111,.08);
-      color: #c2185b;
-      font-weight: 700;
-      font-size: 13px;
+    .side{
+      display:grid;
+      gap:24px;
     }
 
     .photo{
-      border-radius: var(--radius);
-      padding: 0;
-      overflow:hidden;
-      position:relative;
-      min-height: 220px;
-      background:
-        radial-gradient(900px 260px at 30% 20%, rgba(255,45,111,.30), transparent),
-        radial-gradient(900px 260px at 70% 80%, rgba(233,30,99,.22), transparent),
-        linear-gradient(135deg, #fff, #ffe8f1);
+      min-height:220px;
+      border-radius:28px;
       display:grid;
       place-items:center;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,45,111,.3), transparent),
+        linear-gradient(135deg,#fff,#ffe8f1);
     }
-    .photo .bigHeart{
-      font-size: 64px;
-      animation: pulse 1.6s ease-in-out infinite;
-      filter: drop-shadow(0 18px 30px rgba(255,45,111,.22));
-    }
-    @keyframes pulse{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.08); } }
 
+    .photo span{
+      font-size:64px;
+      animation:pulse 1.6s infinite;
+    }
+    @keyframes pulse{ 50%{ transform:scale(1.08); } }
+
+    .mini{
+      background:rgba(255,255,255,.75);
+      padding:22px;
+      border-radius:28px;
+      box-shadow:0 14px 40px rgba(0,0,0,.08);
+    }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+    .chip{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,45,111,.08);
+      font-weight:800;
+      font-size:13px;
+      color:#c2185b;
+    }
+
+    /* Modal */
     .overlay{
       position:fixed;
       inset:0;
-      background: rgba(0,0,0,.45);
+      background:rgba(0,0,0,.45);
       display:none;
       place-items:center;
-      padding:22px;
       z-index:50;
     }
     .overlay.show{ display:grid; }
 
     .modal{
-      width:min(560px, 92vw);
       background:#fff;
-      border-radius: 28px;
-      padding: 26px;
-      box-shadow: 0 30px 90px rgba(0,0,0,.25);
-      border: 1px solid rgba(0,0,0,.06);
+      width:min(640px,92vw);
+      padding:26px;
+      border-radius:28px;
+      box-shadow:0 30px 90px rgba(0,0,0,.25);
       position:relative;
-      overflow:hidden;
     }
-    .modal h3{
-      margin: 0 0 8px;
-      font-size: 26px;
-      letter-spacing: -.4px;
-    }
-    .modal p{ margin:0 0 14px; color: var(--muted); }
-    .modal .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-    .ghostBtn{ background: rgba(0,0,0,.06); color: #2f2f2f; }
 
-    .confetti{
+    .burst i{
       position:absolute;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
+      font-size:22px;
+      animation:pop .9s ease-out forwards;
     }
-    .confetti i{
-      position:absolute;
-      width:10px; height:14px;
-      border-radius: 2px;
-      opacity:.9;
-      animation: fall 1.1s ease-in forwards;
-      transform: translateY(-40px) rotate(0deg);
+    @keyframes pop{
+      from{ opacity:1; transform:translate(0,0) scale(.6); }
+      to{ opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.2); }
     }
-    @keyframes fall{ to{ transform: translateY(520px) rotate(260deg); opacity:0; } }
 
-    @media (max-width: 860px){
-      .wrap{ grid-template-columns: 1fr; }
-      p{ max-width: unset; }
+    .poll{
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(0,0,0,.08);
+    }
+
+    .pollGrid{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pollBtn{
+      background:rgba(255,45,111,.1);
+      color:#c2185b;
+      font-weight:900;
+    }
+
+    @media(max-width:860px){
+      .wrap{ grid-template-columns:1fr; }
     }
   </style>
 </head>
 
 <body>
-  <div class="hearts" aria-hidden="true" id="hearts"></div>
 
-  <main class="wrap">
-    <section class="card">
-      <div class="badge"><span>💌</span> A tiny question with a big heart</div>
+<div class="hearts" id="hearts"></div>
 
-      <h1>
-        Nikku, will you be my <span class="name">Valentine</span>?
-      </h1>
+<main class="wrap">
+  <section class="card">
+    <div class="badge">💌 Tiny question, big heart</div>
 
-      <p>
-        I could write a hundred lines, but the truth is simple:
-        life feels warmer, funnier, and a lot more magical when it’s just you and me -
-        laughing, annoying each other, and choosing each other every single day.
-      </p>
+    <h1>Nikku, will you be my <span class="name">Valentine</span>?</h1>
 
-      <div class="ctaRow" id="ctaRow">
-        <button class="yesBtn" id="yesBtn">Yes (obviously) 💖</button>
-        <button class="noBtn" id="noBtn">No 🙈</button>
+    <p>
+      Life feels warmer, funnier, and way more magical when it’s you and me —
+      laughing, annoying each other, and choosing each other every single day.
+    </p>
+
+    <div class="ctaRow">
+      <button class="yesBtn" id="yesBtn">Yes (obviously) 💖</button>
+      <button class="noBtn" id="noBtn">No 🙈</button>
+    </div>
+  </section>
+
+  <aside class="side">
+    <div class="photo"><span>💗</span></div>
+    <div class="mini">
+      <h3>Plan for our Valentine?</h3>
+      <div class="chips">
+        <div class="chip">Too much food 🍝</div>
+        <div class="chip">Long drive 🚗</div>
+        <div class="chip">Movie night 🎬</div>
+        <div class="chip">Us being us ✨</div>
       </div>
+    </div>
+  </aside>
+</main>
 
-      <p style="margin-top:14px; font-size:13px; color:#8a8a8a;">
-        Tip: If she taps “No”, it’s… technically not an option 😌
-      </p>
-    </section>
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="burst" id="burst"></div>
+    <h2>YAY 💞</h2>
+    <p>
+      Best decision this year, Nikku 💖<br>
+      Love,<br><strong>Vanshu</strong> 😌
+    </p>
 
-    <aside class="side">
-      <div class="photo">
-        <div class="bigHeart">💗</div>
+    <div class="poll">
+      <strong>Pick our date plan 👇</strong>
+      <div class="pollGrid">
+        <button class="pollBtn" data-plan="Dinner">🍽️ Dinner</button>
+        <button class="pollBtn" data-plan="Movie">🎬 Movie</button>
+        <button class="pollBtn" data-plan="Drive">🚗 Drive</button>
+        <button class="pollBtn" data-plan="Surprise">🎁 Surprise</button>
       </div>
-
-      <div class="mini">
-        <h2>Plan for our Valentine?</h2>
-        <div class="chips">
-          <div class="chip">A cute date 💕</div>
-          <div class="chip">Healthy food 🥗🍝</div>
-          <div class="chip">Laughing at nothing 😂</div>
-          <div class="chip">Pictures Please 📸</div>
-          <div class="chip">Us, being us ✨</div>
-        </div>
-      </div>
-    </aside>
-  </main>
-
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Valentine response">
-    <div class="modal">
-      <div class="confetti" id="confetti"></div>
-      <h3>YAY! 💞</h3>
-      <p>
-        Best decision you’ll make this year, Nikku 💖<br/>
-        Officially yours —<br/>
-        Love,<br/>
-        <strong>Vanshu</strong> 😌
-      </p>
-      <div class="actions">
-        <button class="yesBtn" id="shareBtn">Copy a cute message 📋</button>
-        <button class="ghostBtn" id="closeBtn">Close</button>
-      </div>
-      <p style="margin-top:12px; font-size:12px; color:#8a8a8a;">
-        (The “Copy” button just copies text — you can paste it on WhatsApp/Instagram.)
-      </p>
     </div>
   </div>
+</div>
 
-  <script>
-    // Floating hearts background
-    const hearts = document.getElementById('hearts');
-    const heartEmojis = ["💗","💖","💘","💝","💕","💞"];
-    for (let i = 0; i < 24; i++){
-      const h = document.createElement('div');
-      h.className = 'heart';
-      h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
-      h.style.left = Math.random()*100 + 'vw';
-      h.style.animationDuration = (6 + Math.random()*8) + 's';
-      h.style.animationDelay = (Math.random()*6) + 's';
-      h.style.fontSize = (14 + Math.random()*18) + 'px';
-      hearts.appendChild(h);
+<script>
+  /* Floating hearts */
+  const hearts = document.getElementById('hearts');
+  ["💖","💗","💘","💕"].forEach(h=>{
+    for(let i=0;i<6;i++){
+      const d=document.createElement('div');
+      d.className='heart';
+      d.textContent=h;
+      d.style.left=Math.random()*100+'vw';
+      d.style.animationDuration=6+Math.random()*6+'s';
+      hearts.appendChild(d);
     }
+  });
 
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const overlay = document.getElementById('overlay');
-    const closeBtn = document.getElementById('closeBtn');
-    const shareBtn = document.getElementById('shareBtn');
-    const confettiBox = document.getElementById('confetti');
+  /* Buttons */
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const overlay = document.getElementById('overlay');
+  const burst = document.getElementById('burst');
 
-    function openModal(){
-      overlay.classList.add('show');
-      burstConfetti();
+  let noCount = 0;
+
+  noBtn.addEventListener('click', ()=>{
+    noCount++;
+    if(noCount < 3){
+      noBtn.textContent = ["Are you sure? 🙈","Nikku pls 😭"][noCount-1];
+      noBtn.style.position='fixed';
+      noBtn.style.left=Math.random()*80+'vw';
+      noBtn.style.top=Math.random()*80+'vh';
+    } else {
+      noBtn.textContent="Okay fine… Yes 💖";
+      noBtn.className='yesBtn';
+      noBtn.onclick=openModal;
     }
-    function closeModal(){
-      overlay.classList.remove('show');
-      confettiBox.innerHTML = '';
+  });
+
+  yesBtn.onclick = openModal;
+
+  function openModal(){
+    overlay.classList.add('show');
+    heartBurst();
+  }
+
+  function heartBurst(){
+    burst.innerHTML='';
+    for(let i=0;i<24;i++){
+      const h=document.createElement('i');
+      h.textContent='💖';
+      h.style.setProperty('--dx',(Math.random()*400-200)+'px');
+      h.style.setProperty('--dy',(Math.random()*300-100)+'px');
+      burst.appendChild(h);
     }
+  }
 
-    yesBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeModal(); });
+  /* Poll → Email */
+  document.querySelectorAll('.pollBtn').forEach(btn=>{
+    btn.onclick=()=>{
+      const plan=btn.dataset.plan;
+      const subject="Nikku said YES 💖";
+      const body=`Yes, I’m your Valentine 💖\n\nI pick: ${plan}\n\n— Nikku`;
+      location.href=`mailto:vanshajvig@live.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+  });
+</script>
 
-    shareBtn.addEventListener('click', async ()=>{
-      const text = "Nikku 💖 Vanshu made you a tiny webpage just to ask — will you be his Valentine? 😌";
-      try{
-        await navigator.clipboard.writeText(text);
-        shareBtn.textContent = "Copied! ✅";
-        setTimeout(()=> shareBtn.textContent = "Copy a cute message 📋", 1400);
-      }catch(err){
-        alert("Copy didn’t work here. Just type: " + text);
-      }
-    });
-
-    // "No" button dodges the cursor/touch
-    function moveNoButton(){
-      const padding = 16;
-      const btnRect = noBtn.getBoundingClientRect();
-      const maxX = window.innerWidth - btnRect.width - padding;
-      const maxY = window.innerHeight - btnRect.height - padding;
-
-      const x = Math.max(padding, Math.random() * maxX);
-      const y = Math.max(padding, Math.random() * maxY);
-
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-      noBtn.style.zIndex = 10;
-    }
-
-    noBtn.addEventListener('mouseenter', moveNoButton);
-    noBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); moveNoButton(); }, {passive:false});
-    noBtn.addEventListener('click', moveNoButton);
-
-    // Confetti burst
-    function burstConfetti(){
-      confettiBox.innerHTML = '';
-      const pieces = 46;
-      for(let i=0;i<pieces;i++){
-        const c = document.createElement('i');
-        c.style.left = (Math.random()*100) + '%';
-        c.style.top = (-20 - Math.random()*30) + 'px';
-        c.style.transform = `translateY(-40px) rotate(${Math.random()*90}deg)`;
-        c.style.width = (6 + Math.random()*10) + 'px';
-        c.style.height = (8 + Math.random()*14) + 'px';
-        const hue = Math.floor(Math.random()*360);
-        c.style.background = `hsl(${hue} 90% 60%)`;
-        c.style.animationDelay = (Math.random()*0.25) + 's';
-        confettiBox.appendChild(c);
-      }
-      setTimeout(()=> confettiBox.innerHTML = '', 1400);
-    }
-  </script>
 </body>
 </html>
